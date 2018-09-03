@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="./src/jSignature.js"></script>
+	<script>
+		$(function() {
+				if ($('.panel-survey-signature').length > 0) {
+					$.each($('.panel-survey-signature'), function() {
+						var $container = $(this);
+						var $sigdiv = $container.find('.survey_signature');
+						$sigdiv = $sigdiv.jSignature({'decor-color' : '#D1D0CE', 'color': '#000', 'background-color': '#fff', 'UndoButton':true});
+						var $clearbtn = $container.find('.sign_clean');
+						var $acceptbtn = $container.find('.sign_accept');
+						$clearbtn.on('click', function() {
+							$sigdiv.jSignature('reset');
+							var signature_input = $container.find('input.hi');
+							signature_input.val('');
+						});
+						$acceptbtn.on('click', function() {
+							empty_sign = $sigdiv.jSignature("getData",'image');
+							var signature_input = $container.find('input.hi'); 
+							window.g  =signature_input
+							signature_input.val(empty_sign+'');
+							signature_input.text(empty_sign+'');
+							$('#extraarea').empty().append($('<img/>').attr('src','data:'+empty_sign));
+						});
+					});
+				}	  
+		
+				$('#btn_clear_signature').on('click',function() {
+					$(".survey_signature").jSignature('reset');
+					$('#extraarea').empty();
+					$('input.hi').val('');
+				});
+				// $('#btn_save').on('click',function() {
+				// 	empty_sign = $("#signature").jSignature("getData",'image');
+				// 	$('#extraarea').empty().append($('<img/>').attr('src','data:'+empty_sign));
+				// });
+			});
+
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default panel-survey-signature">
+					<div class="panel-heading">
+						<div class="pull-right">
+							<input type="text" class="hi hidden" />
+							<a class="btn btn-xs sign_clean">Clear</a>
+							<a class="btn btn-xs sign_accept">Accept</a>
+						</div>
+						<strong>Draw your signature</strong>
+					</div>
+					<div class="panel-body survey_signature"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<strong>Print your result</strong>
+			</div>
+			<div class="panel-body">
+				<div id="extraarea" class="panel-body" style="min-height: 282px;"></div>
+			</div>
+		</div>
+		<input type="button" value="Clear" class="btn btn-info" id="btn_clear_signature">
+		<!-- <input type="button" value="submit" id="btn_save"> -->
+	</div>
+</body>
+
+</html>
