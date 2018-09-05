@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		div.upload {
+		    position: relative;
+			width: 300px;
+			min-height: 300px;
+			overflow: hidden;
+			background-color:#FFF;
+			border: 10px dashed #ccc;
+		}
+
+			div.upload input {
+			    position: relative;
+				width: 320px;
+				min-height: 320px;
+				opacity: 0;
+				overflow: hidden;
+				margin: -10px 0 0 -10px;
+				z-index: 999999;
+			}
+			
+			div.upload .upload_img {
+			    position: absolute;
+				top: 0;
+			}
+			
+			div.upload .upload_img img {
+				width: 300px;
+				height: auto;
+			}
+	</style>
+</head>
+<body>
+<div class="container">
+        <div class="row well well-sm">
+			<div class="col-lg-12 col-md-12">
+				<div>
+					<div style="padding: 5px 0px;">
+						<label>Drop File</label>
+						<div class="upload" id="upload">
+							<input type="file" id="picField" class="btn"  />
+							<div id="outimg" class="upload_img"></div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	_PageLoad = function () {
+        document.getElementById('picField').onchange = function (evt) {
+            var tgt = evt.target || window.event.srcElement,
+                files = tgt.files;
+            // alert(evt.target[0].mozFullPath)
+            files[0].name.HTMLInputElement = '' + encodeURI(files[0].name+'');
+            
+            if (document.getElementById('outimg').getElementsByTagName('img').length > 0) {
+                document.getElementById('outimg').getElementsByTagName('img')[0].remove();
+            }
+            var img = new Image();
+            // FileReader support
+            if (FileReader && files && files.length) {
+                var fr = new FileReader();
+                fr.onload = function () {
+                    img.src = fr.result;
+                    document.getElementById('outimg').appendChild(img);
+                    img.style.position = 'relative';
+                    img.onmouseover = function () {
+                        img.style.cursor = 'pointer';
+                        img.onclick = function () {
+                            document.getElementById('picField').click();
+                        }
+                    }
+                    document.getElementById('upload').style.height = img.height + 'px';
+                    
+                }
+                fr.readAsDataURL(files[0]);
+            }
+
+                // Not supported
+            else {
+                // fallback -- perhaps submit the input to an iframe and temporarily store
+                // them on the server until the user's session ends.
+            }
+        }
+    }
+	new _PageLoad()
+	</script>
+</body>
+</html>
